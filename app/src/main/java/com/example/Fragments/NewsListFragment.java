@@ -37,7 +37,7 @@ public class NewsListFragment extends Fragment {
     private FrameLayout container;
     private String currentQuery = "";
 
-    private static final String CSV_URL = "";
+    private static final String CSV_BASE_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRr3-LdTANTCbj0ojujZRxBttAdkwjLtwIIY7XT4SMCDZoBLSW8NqAQPS7BfuO2nn5AByiqS31x6kaJ/pub?output=csv&gid=";
 
     @Nullable
     @Override
@@ -126,7 +126,8 @@ public class NewsListFragment extends Fragment {
     private void downloadCsv() {
         new Thread(() -> {
             try {
-                URL url = new URL(CSV_URL);
+                String gid = requireContext().getString(R.string.csv_gid);
+                URL url = new URL(CSV_BASE_URL + gid);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
                 String line;
@@ -163,7 +164,7 @@ public class NewsListFragment extends Fragment {
     private void setupToolbar(Toolbar toolbar) {
         MenuItem searchItem = toolbar.getMenu().findItem(R.id.action_search);
         SearchView searchView = (SearchView) searchItem.getActionView();
-        searchView.setQueryHint("Buscar noticia...");
+        searchView.setQueryHint(getString(R.string.search_hint));
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) { return false; }

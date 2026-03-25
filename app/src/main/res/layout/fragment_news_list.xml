@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
-        app:title="Noticias"
+        app:title="@string/toolbar_title"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
     <Spinner

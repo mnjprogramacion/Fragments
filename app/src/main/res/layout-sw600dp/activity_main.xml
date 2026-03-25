@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Selecciona una noticia"
+            android:text="@string/select_news"
             android:textSize="18sp"
             android:textColor="#888888" />
 

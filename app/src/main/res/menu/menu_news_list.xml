@@ -4,23 +4,23 @@
 
     <item
         android:id="@+id/action_search"
-        android:title="Buscar"
+        android:title="@string/menu_search"
         android:icon="@android:drawable/ic_menu_search"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="ifRoom|collapseActionView" />
 
     <item
         android:id="@+id/action_sort"
-        android:title="Ordenar"
+        android:title="@string/menu_sort"
         android:icon="@android:drawable/ic_menu_sort_by_size"
         app:showAsAction="ifRoom">
         <menu>
             <item
                 android:id="@+id/sort_fecha"
-                android:title="Por fecha" />
+                android:title="@string/sort_by_date" />
             <item
                 android:id="@+id/sort_importancia"
-                android:title="Por importancia" />
+                android:title="@string/sort_by_importance" />
         </menu>
     </item>
 
