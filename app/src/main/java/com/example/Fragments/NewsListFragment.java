@@ -37,7 +37,7 @@ public class NewsListFragment extends Fragment {
     private FrameLayout container;
     private String currentQuery = "";
 
-    private static final String CSV_BASE_URL = "";
+    private static final String CSV_BASE_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRr3-LdTANTCbj0ojujZRxBttAdkwjLtwIIY7XT4SMCDZoBLSW8NqAQPS7BfuO2nn5AByiqS31x6kaJ/pub?output=csv&gid=";
 
     @Nullable
     @Override

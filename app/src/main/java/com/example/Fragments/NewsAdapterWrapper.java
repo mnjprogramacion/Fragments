@@ -54,7 +54,7 @@ public class NewsAdapterWrapper extends BaseAdapter {
 
         if (item.thumbnailUrl != null && !item.thumbnailUrl.isEmpty()) {
             Picasso.get().load(item.thumbnailUrl)
-                    .placeholder(android.R.drawable.ic_menu_gallery)
+                    .noPlaceholder()
                     .into(imgThumbnail);
         }
 

@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 public class NewsDetailFragment extends Fragment {
@@ -46,7 +47,18 @@ public class NewsDetailFragment extends Fragment {
         txtContenido.setText(item.contenido);
 
         if (item.imagenGrandeUrl != null && !item.imagenGrandeUrl.isEmpty()) {
-            Picasso.get().load(item.imagenGrandeUrl).placeholder(android.R.drawable.ic_menu_gallery).into(imgDetalle);
+            imgDetalle.setAlpha(0f);
+            Picasso.get().load(item.imagenGrandeUrl).noPlaceholder().into(imgDetalle, new Callback() {
+                @Override
+                public void onSuccess() {
+                    imgDetalle.animate().alpha(1f).setDuration(600).start();
+                }
+
+                @Override
+                public void onError(Exception e) {
+                    imgDetalle.setAlpha(1f);
+                }
+            });
         }
 
         return view;
