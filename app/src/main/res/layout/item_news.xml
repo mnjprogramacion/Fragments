@@ -24,10 +24,7 @@
             android:id="@+id/txtTitulo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:textSize="16sp"
-            android:maxLines="2"
-            android:ellipsize="end" />
+            style="@style/NewsTitleStyle" />
 
         <TextView
             android:id="@+id/txtDescripcion"
