@@ -8,4 +8,12 @@
     <string name="sort_by_importance">By importance</string>
     <string name="select_news">Select a news item</string>
     <string name="csv_gid">473289749</string>
+    <string name="menu_interval">Check interval</string>
+    <string name="interval_title">Check news every</string>
+    <string name="interval_15">15 minutes</string>
+    <string name="interval_30">30 minutes</string>
+    <string name="interval_60">60 minutes</string>
+    <string name="notification_channel_name">News</string>
+    <string name="notification_title">New news!</string>
+    <string name="notification_text">There are new news available. Open the app to see them.</string>
 </resources>

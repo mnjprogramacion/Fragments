@@ -24,4 +24,10 @@
         </menu>
     </item>
 
+    <item
+        android:id="@+id/action_interval"
+        android:title="@string/menu_interval"
+        android:icon="@android:drawable/ic_menu_recent_history"
+        app:showAsAction="never" />
+
 </menu>

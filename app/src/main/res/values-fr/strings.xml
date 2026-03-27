@@ -8,4 +8,12 @@
     <string name="sort_by_importance">Par importance</string>
     <string name="select_news">Sélectionnez une actualité</string>
     <string name="csv_gid">25160086</string>
+    <string name="menu_interval">Intervalle de vérification</string>
+    <string name="interval_title">Vérifier les actualités toutes les</string>
+    <string name="interval_15">15 minutes</string>
+    <string name="interval_30">30 minutes</string>
+    <string name="interval_60">60 minutes</string>
+    <string name="notification_channel_name">Actualités</string>
+    <string name="notification_title">Nouvelles actualités !</string>
+    <string name="notification_text">De nouvelles actualités sont disponibles. Ouvrez l\'appli pour les voir.</string>
 </resources>

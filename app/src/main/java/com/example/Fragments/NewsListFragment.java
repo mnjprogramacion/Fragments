@@ -1,6 +1,11 @@
 package com.example.Fragments;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -17,9 +22,13 @@ import android.widget.StackView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -28,6 +37,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class NewsListFragment extends Fragment {
 
@@ -147,6 +157,9 @@ public class NewsListFragment extends Fragment {
                 }
                 reader.close();
 
+                SharedPreferences prefs = requireContext().getSharedPreferences("news_prefs", Context.MODE_PRIVATE);
+                prefs.edit().putInt("last_news_count", items.size()).apply();
+
                 if (getActivity() != null) {
                     getActivity().runOnUiThread(() -> {
                         newsList.clear();
@@ -186,6 +199,9 @@ public class NewsListFragment extends Fragment {
             } else if (id == R.id.sort_importancia) {
                 Collections.sort(newsList, (a, b) -> Integer.compare(b.importancia, a.importancia));
                 applyFilter();
+                return true;
+            } else if (id == R.id.action_interval) {
+                showIntervalDialog();
                 return true;
             }
             return false;
@@ -232,5 +248,38 @@ public class NewsListFragment extends Fragment {
         }
         fields.add(sb.toString());
         return fields.toArray(new String[0]);
+    }
+
+    private void showIntervalDialog() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (requireContext().checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS}, 100);
+            }
+        }
+
+        String[] options = {
+                getString(R.string.interval_15),
+                getString(R.string.interval_30),
+                getString(R.string.interval_60)
+        };
+        int[] minutes = {15, 30, 60};
+
+        new AlertDialog.Builder(requireContext())
+                .setTitle(getString(R.string.interval_title))
+                .setItems(options, (dialog, which) -> scheduleNewsCheck(minutes[which]))
+                .show();
+    }
+
+    private void scheduleNewsCheck(int minutes) {
+        SharedPreferences prefs = requireContext().getSharedPreferences("news_prefs", 0);
+        prefs.edit().putInt("check_interval", minutes).apply();
+
+        PeriodicWorkRequest request = new PeriodicWorkRequest.Builder(
+                NewsCheckWorker.class, minutes, TimeUnit.MINUTES)
+                .build();
+
+        WorkManager.getInstance(requireContext())
+                .enqueueUniquePeriodicWork("news_check",
+                        ExistingPeriodicWorkPolicy.REPLACE, request);
     }
 }

@@ -8,4 +8,12 @@
     <string name="sort_by_importance">Por importancia</string>
     <string name="select_news">Selecciona una noticia</string>
     <string name="csv_gid">0</string>
+    <string name="menu_interval">Intervalo de comprobación</string>
+    <string name="interval_title">Comprobar noticias cada</string>
+    <string name="interval_15">15 minutos</string>
+    <string name="interval_30">30 minutos</string>
+    <string name="interval_60">60 minutos</string>
+    <string name="notification_channel_name">Noticias</string>
+    <string name="notification_title">¡Nuevas noticias!</string>
+    <string name="notification_text">Hay nuevas noticias disponibles. Abre la app para verlas.</string>
 </resources>
