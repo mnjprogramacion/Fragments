@@ -264,9 +264,19 @@ public class NewsListFragment extends Fragment {
         };
         int[] minutes = {15, 30, 60};
 
+        SharedPreferences prefs = requireContext().getSharedPreferences("news_prefs", Context.MODE_PRIVATE);
+        int current = prefs.getInt("check_interval", -1);
+        int checkedIndex = -1;
+        for (int i = 0; i < minutes.length; i++) {
+            if (minutes[i] == current) { checkedIndex = i; break; }
+        }
+
         new AlertDialog.Builder(requireContext())
                 .setTitle(getString(R.string.interval_title))
-                .setItems(options, (dialog, which) -> scheduleNewsCheck(minutes[which]))
+                .setSingleChoiceItems(options, checkedIndex, (dialog, which) -> {
+                    scheduleNewsCheck(minutes[which]);
+                    dialog.dismiss();
+                })
                 .show();
     }
 
