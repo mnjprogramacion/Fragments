@@ -123,6 +123,8 @@ public class NewsListFragment extends Fragment {
                 requireActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.detailContainer, detail)
                         .commit();
+                View placeholder = requireActivity().findViewById(R.id.txtPlaceholder);
+                if (placeholder != null) placeholder.setVisibility(View.GONE);
             } else {
                 Intent intent = new Intent(requireContext(), DetailActivity.class);
                 intent.putExtra("news", item);
