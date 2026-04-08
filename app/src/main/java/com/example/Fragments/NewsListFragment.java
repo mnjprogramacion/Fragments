@@ -3,6 +3,7 @@ package com.example.Fragments;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -135,6 +136,8 @@ public class NewsListFragment extends Fragment {
         container.addView(adapterView);
     }
 
+    private static final String TAG = "ParseBenchmark";
+
     private void downloadCsv() {
         new Thread(() -> {
             try {
@@ -144,11 +147,45 @@ public class NewsListFragment extends Fragment {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
                 String line;
                 boolean first = true;
-                List<NewsItem> items = new ArrayList<>();
+                List<String> rawLines = new ArrayList<>();
 
                 while ((line = reader.readLine()) != null) {
                     if (first) { first = false; continue; }
-                    String[] cols = parseCsvLine(line);
+                    rawLines.add(line);
+                }
+                reader.close();
+
+                // --- BENCHMARK: Método 1 — Parseo manual (soporta campos entrecomillados con comas) ---
+                long t1 = System.currentTimeMillis();
+                List<String[]> resultManual = new ArrayList<>();
+                for (String l : rawLines) resultManual.add(parseCsvLine(l));
+                long t1Total = System.currentTimeMillis() - t1;
+                Log.d(TAG, "Manual (char a char): " + t1Total + " ms para " + rawLines.size() + " líneas");
+
+                // --- BENCHMARK: Método 2 — String.split() (más rápido, pero rompe con comas dentro de comillas) ---
+                long t2 = System.currentTimeMillis();
+                List<String[]> resultSplit = new ArrayList<>();
+                for (String l : rawLines) resultSplit.add(l.split(",", -1));
+                long t2Total = System.currentTimeMillis() - t2;
+                Log.d(TAG, "String.split():       " + t2Total + " ms para " + rawLines.size() + " líneas");
+
+                // --- BENCHMARK: Método 3 — StringTokenizer (más ligero que split, sin regex) ---
+                long t3 = System.currentTimeMillis();
+                List<String[]> resultTokenizer = new ArrayList<>();
+                for (String l : rawLines) {
+                    java.util.StringTokenizer st = new java.util.StringTokenizer(l, ",");
+                    List<String> tokens = new ArrayList<>();
+                    while (st.hasMoreTokens()) tokens.add(st.nextToken());
+                    resultTokenizer.add(tokens.toArray(new String[0]));
+                }
+                long t3Total = System.currentTimeMillis() - t3;
+                Log.d(TAG, "StringTokenizer:      " + t3Total + " ms para " + rawLines.size() + " líneas");
+
+                Log.d(TAG, "--- Resultado: manual=" + t1Total + "ms | split=" + t2Total + "ms | tokenizer=" + t3Total + "ms ---");
+
+                // Construcción de noticias usando el método correcto (manual)
+                List<NewsItem> items = new ArrayList<>();
+                for (String[] cols : resultManual) {
                     if (cols.length >= 7) {
                         int importancia = 0;
                         try { importancia = Integer.parseInt(cols[6].trim()); } catch (NumberFormatException ignored) {}
@@ -157,7 +194,6 @@ public class NewsListFragment extends Fragment {
                                 cols[3].trim(), cols[4].trim(), cols[5].trim(), importancia));
                     }
                 }
-                reader.close();
 
                 SharedPreferences prefs = requireContext().getSharedPreferences("news_prefs", Context.MODE_PRIVATE);
                 prefs.edit().putInt("last_news_count", items.size()).apply();
