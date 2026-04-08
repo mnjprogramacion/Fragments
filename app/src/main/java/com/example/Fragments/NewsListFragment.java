@@ -1,6 +1,8 @@
 package com.example.Fragments;
 
 import android.Manifest;
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -198,6 +200,31 @@ public class NewsListFragment extends Fragment {
 
                 SharedPreferences prefs = requireContext().getSharedPreferences("news_prefs", Context.MODE_PRIVATE);
                 prefs.edit().putInt("last_news_count", items.size()).apply();
+
+                // Guardar todas las noticias para el widget (títulos y descripciones separados por §)
+                if (!items.isEmpty()) {
+                    StringBuilder titles = new StringBuilder();
+                    StringBuilder descs = new StringBuilder();
+                    for (int i = 0; i < items.size(); i++) {
+                        if (i > 0) { titles.append("§"); descs.append("§"); }
+                        titles.append(items.get(i).titulo);
+                        descs.append(items.get(i).descripcion);
+                    }
+                    requireContext().getSharedPreferences("widget_prefs", Context.MODE_PRIVATE)
+                            .edit()
+                            .putString("all_titles", titles.toString())
+                            .putString("all_descs", descs.toString())
+                            .apply();
+                    // Actualizar el widget
+                    AppWidgetManager wm = AppWidgetManager.getInstance(requireContext());
+                    int[] ids = wm.getAppWidgetIds(new ComponentName(requireContext(), NewsWidgetProvider.class));
+                    if (ids.length > 0) {
+                        Intent widgetIntent = new Intent(requireContext(), NewsWidgetProvider.class);
+                        widgetIntent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+                        widgetIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
+                        requireContext().sendBroadcast(widgetIntent);
+                    }
+                }
 
                 if (getActivity() != null) {
                     getActivity().runOnUiThread(() -> {

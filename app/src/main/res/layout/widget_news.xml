@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widgetRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/widget_background"
+    android:padding="12dp">
+
+    <!-- Fila superior: hora actual (se actualiza sola cada minuto) -->
+    <TextClock
+        android:id="@+id/txtWidgetTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:format12Hour="hh:mm a"
+        android:format24Hour="HH:mm"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:textColor="@color/primary_container"
+        android:fontFamily="sans-serif-light"
+        android:gravity="center_horizontal" />
+
+    <!-- Separador sutil -->
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:src="@color/on_primary"
+        android:importantForAccessibility="no" />
+
+    <!-- Titular de la noticia -->
+    <TextView
+        android:id="@+id/txtWidgetTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        android:textColor="@color/primary_container"
+        android:maxLines="2"
+        android:ellipsize="end"
+        android:gravity="center_horizontal"
+        android:layout_marginBottom="4dp" />
+
+    <!-- Descripción breve -->
+    <TextView
+        android:id="@+id/txtWidgetDesc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="11sp"
+        android:textColor="@color/on_primary"
+        android:maxLines="3"
+        android:ellipsize="end"
+        android:gravity="center_horizontal" />
+
+</LinearLayout>
