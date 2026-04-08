@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Fragment anterior se aleja hacia la izquierda al ser reemplazado -->
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:interpolator="@android:anim/accelerate_interpolator">
+    <translate
+        android:fromXDelta="0%"
+        android:toXDelta="-30%"
+        android:duration="300" />
+    <alpha
+        android:fromAlpha="1"
+        android:toAlpha="0.3"
+        android:duration="300" />
+</set>

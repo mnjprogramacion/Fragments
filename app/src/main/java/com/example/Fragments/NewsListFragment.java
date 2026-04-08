@@ -122,6 +122,7 @@ public class NewsListFragment extends Fragment {
             if (isDualPane()) {
                 NewsDetailFragment detail = NewsDetailFragment.newInstance(item);
                 requireActivity().getSupportFragmentManager().beginTransaction()
+                        .setCustomAnimations(R.anim.fragment_enter, R.anim.fragment_exit)
                         .replace(R.id.detailContainer, detail)
                         .commit();
                 View placeholder = requireActivity().findViewById(R.id.txtPlaceholder);

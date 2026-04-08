@@ -4,6 +4,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -39,8 +41,14 @@ public class NewsAdapterWrapper extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        if (convertView == null) {
+        boolean isNew = convertView == null;
+        if (isNew) {
             convertView = LayoutInflater.from(context).inflate(layoutRes, parent, false);
+        }
+        // Tween animation (XML): slide desde abajo + fade solo en vistas recién creadas
+        if (isNew) {
+            Animation anim = AnimationUtils.loadAnimation(context, R.anim.item_slide_in);
+            convertView.startAnimation(anim);
         }
 
         NewsItem item = wrappedAdapter.getItem(position);

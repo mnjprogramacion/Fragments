@@ -1,5 +1,7 @@
 package com.example.Fragments;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,6 +47,15 @@ public class NewsDetailFragment extends Fragment {
         txtTitulo.setText(item.titulo);
         txtDescripcion.setText(item.descripcion);
         txtContenido.setText(item.contenido);
+
+        // ObjectAnimator: el título aparece con un efecto de escala (zoom in suave)
+        ObjectAnimator scaleX = ObjectAnimator.ofFloat(txtTitulo, "scaleX", 0.75f, 1f);
+        ObjectAnimator scaleY = ObjectAnimator.ofFloat(txtTitulo, "scaleY", 0.75f, 1f);
+        ObjectAnimator fadeIn = ObjectAnimator.ofFloat(txtTitulo, "alpha", 0f, 1f);
+        AnimatorSet titleAnim = new AnimatorSet();
+        titleAnim.playTogether(scaleX, scaleY, fadeIn);
+        titleAnim.setDuration(400);
+        titleAnim.start();
 
         if (item.imagenGrandeUrl != null && !item.imagenGrandeUrl.isEmpty()) {
             imgDetalle.setAlpha(0f);
